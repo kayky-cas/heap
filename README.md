@@ -42,19 +42,30 @@ Inserir, remover o elemento de maior prioridade.
 
 let q = vec![...];
 
-fn add_child(q: &Vec<i32>, i: i32, x: i32) {
-    q[i] = x;
-    let f = (i - 1) / 2;
+fn insert(queue: Vec<i32>, value: i32) {
+    queue.push(value);
 
-    if q[f] < x {
-       q[i] = q[f];
-       q[f] = x;
+    if queue.len() == 1 {
+        return;
+    }
 
-       add_child(q, f, x);
+    sift_up(queue.len() - 1, value);
+}
+
+fn sift_up(queue: [i32], pos: usize, value: i32) {
+    let father_pos = parent!(pos);
+
+    if queue[father_pos] < value {
+       queue[pos] = queue[father_pos];
+       queue[father_pos] = value;
+
+        if father_pos > 0 {
+            sift_up(queue, father_pos, value);
+        }
     }
 }
 
-add_child(&q, q.lenght, 15);
+sift_up(q.len() - 1, value);
 ```
 
 ```rust
@@ -63,17 +74,34 @@ add_child(&q, q.lenght, 15);
 
 let q = vec![...];
 
-fn get(q: &Vec<i32>) -> i32 {
-    let x = q[0];
+fn get(queue: Vec<i32>) -> Option<i32> {
+    if queue.is_empty() {
+        return None;
+    }
 
-    q[0] = q[i];
-    q[i] = 0;
+    let val = queue[0];
 
-    return x;
+    sift_down(0);
+    queue.pop();
+
+    return Some(val);
 }
 
-fn get_a(q: &Vec<i32>, i: i32) {
+fn sift_down(queue: Vec<i32>, pos: usize) {
+    let mut pos_child = 2 * pos + 1;
 
+    if pos_child > queue.len() - 1 {
+        return;
+    }
+
+    let pos_right = pos_child + 1;
+
+    if pos_right < queue.len() && queue[pos_right] > self.queue[pos_child] {
+        pos_child = pos_right;
+    }
+
+    queue[pos] = queue[pos_child];
+    sift_down(pos_child);
 }
 ```
 
@@ -81,9 +109,11 @@ fn get_a(q: &Vec<i32>, i: i32) {
 
 ```rust
 fn heapsort(v: &[i32]) {
-
+    for i in (0..=parent!(heap.len() - 1)).rev() {
+        sift_down(v, i);
+    }
 }
 ```
 
-Heap: O(n)
-Heapsort: O(n log n)
+-   Heap: O(n)
+-   Heapsort: O(n log n)

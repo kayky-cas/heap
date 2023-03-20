@@ -1,4 +1,5 @@
 use std::{fmt::Display, usize};
+git push --set-upstream origin main
 
 macro_rules! parent {
     ($x:expr) => {
@@ -8,14 +9,14 @@ macro_rules! parent {
 
 pub struct Heap<T>
 where
-    T: PartialOrd + Display,
+T: PartialOrd + Display,
 {
     queue: Vec<T>,
 }
 
 impl<T> Display for Heap<T>
 where
-    T: PartialOrd + Display + Copy,
+T: PartialOrd + Display + Copy,
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.str_child(0, "".to_owned()))
@@ -24,7 +25,7 @@ where
 
 impl<T> Heap<T>
 where
-    T: PartialOrd + Display + Copy,
+T: PartialOrd + Display + Copy,
 {
     pub fn new() -> Self {
         Self { queue: Vec::new() }
@@ -105,7 +106,7 @@ where
 
 impl<T> From<Vec<T>> for Heap<T>
 where
-    T: PartialOrd + Display + Copy,
+T: PartialOrd + Display + Copy,
 {
     fn from(value: Vec<T>) -> Self {
         let mut heap = Self { queue: value };
@@ -126,37 +127,37 @@ mod tests {
     use rand::Rng;
 
     impl<T> Heap<T>
-    where
-        T: PartialOrd + Display + Copy,
-    {
-        fn check(&self) -> bool {
-            return self.queue.is_empty() || self.check_child(0);
+        where
+            T: PartialOrd + Display + Copy,
+        {
+            fn check(&self) -> bool {
+                return self.queue.is_empty() || self.check_child(0);
+            }
+
+            fn check_child(&self, pos: usize) -> bool {
+                let p_left = 2 * pos + 1;
+
+                if p_left > self.queue.len() - 1 {
+                    return true;
+                }
+
+                if self.queue[p_left] > self.queue[pos] {
+                    return false;
+                }
+
+                let p_right = p_left + 1;
+
+                if p_right > self.queue.len() - 1 {
+                    return true;
+                }
+
+                if self.queue[p_right] > self.queue[pos] {
+                    return false;
+                }
+
+                return self.check_child(p_left) && self.check_child(p_right);
+            }
         }
-
-        fn check_child(&self, pos: usize) -> bool {
-            let p_left = 2 * pos + 1;
-
-            if p_left > self.queue.len() - 1 {
-                return true;
-            }
-
-            if self.queue[p_left] > self.queue[pos] {
-                return false;
-            }
-
-            let p_right = p_left + 1;
-
-            if p_right > self.queue.len() - 1 {
-                return true;
-            }
-
-            if self.queue[p_right] > self.queue[pos] {
-                return false;
-            }
-
-            return self.check_child(p_left) && self.check_child(p_right);
-        }
-    }
 
     #[test]
     fn insert_remove() {
@@ -182,7 +183,7 @@ mod tests {
         let heap: Heap<_> = vec![
             974, 707, 699, 483, 588, 592, 234, 129, 119, 363, 328, 57, 247, 548, 17, 23, 101,
         ]
-        .into();
+            .into();
 
         assert!(heap.check());
     }
