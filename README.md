@@ -109,7 +109,7 @@ fn sift_down(queue: Vec<i32>, pos: usize) {
 
 ```rust
 fn heapsort(v: &[i32]) {
-    for i in (0..=parent!(heap.len() - 1)).rev() {
+    for i in (0..=parent!(v.len() - 1)).rev() {
         sift_down(v, i);
     }
 }
