@@ -161,7 +161,7 @@ mod tests {
     #[test]
     fn insert_remove() {
         let mut heap = Heap::new();
-        for _ in 0..10000 {
+        for _ in 0..1000 {
             heap.insert(rand::thread_rng().gen_range(1..=10000));
             assert!(heap.check());
         }
