@@ -64,8 +64,6 @@ fn sift_up(queue: [i32], pos: usize, value: i32) {
         }
     }
 }
-
-sift_up(q.len() - 1, value);
 ```
 
 ```rust
