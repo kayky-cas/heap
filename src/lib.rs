@@ -56,18 +56,20 @@ where
             return;
         }
 
-        self.sift_up(self.queue.len() - 1, value);
+        self.sift_up(self.queue.len() - 1);
     }
 
-    fn sift_up(&mut self, pos: usize, value: E) {
+    fn sift_up(&mut self, pos: usize) {
         let father_pos = parent!(pos);
+
+        let value = self.queue[pos];
 
         if self.queue[father_pos] < value {
             self.queue[pos] = self.queue[father_pos];
             self.queue[father_pos] = value;
 
             if father_pos > 0 {
-                self.sift_up(father_pos, value);
+                self.sift_up(father_pos);
             }
         }
     }
@@ -98,13 +100,17 @@ where
             pos_child = pos_right;
         }
 
-        if check && self.queue[pos] > self.queue[pos_child] {
-            return;
+        let value = self.queue[pos];
+
+        if check {
+            if value > self.queue[pos_child] {
+                return;
+            }
+
+            self.queue[pos_child] = value;
         }
 
-        let temp = self.queue[pos];
         self.queue[pos] = self.queue[pos_child];
-        self.queue[pos_child] = temp;
 
         self.sift_down(pos_child, check);
     }
@@ -147,7 +153,9 @@ mod tests {
                 return true;
             }
 
-            if self.queue[p_left] > self.queue[pos] {
+            let value = self.queue[pos];
+
+            if self.queue[p_left] > value {
                 return false;
             }
 
@@ -157,7 +165,7 @@ mod tests {
                 return true;
             }
 
-            if self.queue[p_right] > self.queue[pos] {
+            if self.queue[p_right] > value {
                 return false;
             }
 
