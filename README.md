@@ -56,8 +56,8 @@ fn sift_up(queue: [i32], pos: usize, value: i32) {
     let father_pos = parent!(pos);
 
     if queue[father_pos] < value {
-       queue[pos] = queue[father_pos];
-       queue[father_pos] = value;
+        queue[pos] = queue[father_pos];
+        queue[father_pos] = value;
 
         if father_pos > 0 {
             sift_up(queue, father_pos, value);
