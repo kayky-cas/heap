@@ -6,25 +6,25 @@ macro_rules! parent {
     };
 }
 
-pub struct Heap<T>
+pub struct Heap<E>
 where
-    T: PartialOrd + Display,
+    E: PartialOrd + Display,
 {
-    queue: Vec<T>,
+    queue: Vec<E>,
 }
 
-impl<T> Display for Heap<T>
+impl<E> Display for Heap<E>
 where
-    T: PartialOrd + Display + Copy,
+    E: PartialOrd + Display + Copy,
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.str_child(0, "".to_owned()))
     }
 }
 
-impl<T> Heap<T>
+impl<E> Heap<E>
 where
-    T: PartialOrd + Display + Copy,
+    E: PartialOrd + Display + Copy,
 {
     pub fn new() -> Self {
         Self { queue: Vec::new() }
@@ -49,7 +49,7 @@ where
         self.queue.len()
     }
 
-    pub fn insert(&mut self, value: T) {
+    pub fn insert(&mut self, value: E) {
         self.queue.push(value);
 
         if self.queue.len() == 1 {
@@ -59,7 +59,7 @@ where
         self.sift_up(self.queue.len() - 1, value);
     }
 
-    fn sift_up(&mut self, pos: usize, value: T) {
+    fn sift_up(&mut self, pos: usize, value: E) {
         let father_pos = parent!(pos);
 
         if self.queue[father_pos] < value {
@@ -72,7 +72,7 @@ where
         }
     }
 
-    pub fn get(&mut self) -> Option<T> {
+    pub fn get(&mut self) -> Option<E> {
         if self.queue.is_empty() {
             return None;
         }
@@ -110,11 +110,11 @@ where
     }
 }
 
-impl<T> From<Vec<T>> for Heap<T>
+impl<E> From<Vec<E>> for Heap<E>
 where
-    T: PartialOrd + Display + Copy,
+    E: PartialOrd + Display + Copy,
 {
-    fn from(value: Vec<T>) -> Self {
+    fn from(value: Vec<E>) -> Self {
         let mut heap = Self { queue: value };
 
         for i in (0..=parent!(heap.len() - 1)).rev() {
@@ -132,9 +132,9 @@ mod tests {
     use crate::Heap;
     use rand::Rng;
 
-    impl<T> Heap<T>
+    impl<E> Heap<E>
     where
-        T: PartialOrd + Display + Copy,
+        E: PartialOrd + Display + Copy,
     {
         fn check(&self) -> bool {
             return self.queue.is_empty() || self.check_child(0);
