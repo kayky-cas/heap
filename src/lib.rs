@@ -79,13 +79,13 @@ where
 
         let val = self.queue[0];
 
-        self.sift_down(0);
+        self.sift_down(0, false);
         self.queue.pop();
 
         return Some(val);
     }
 
-    fn sift_down(&mut self, pos: usize) {
+    fn sift_down(&mut self, pos: usize, check: bool) {
         let mut pos_child = 2 * pos + 1;
 
         if pos_child > self.queue.len() - 1 {
@@ -98,7 +98,7 @@ where
             pos_child = pos_right;
         }
 
-        if self.queue[pos] > self.queue[pos_child] {
+        if check && self.queue[pos] > self.queue[pos_child] {
             return;
         }
 
@@ -106,7 +106,7 @@ where
         self.queue[pos] = self.queue[pos_child];
         self.queue[pos_child] = temp;
 
-        self.sift_down(pos_child);
+        self.sift_down(pos_child, check);
     }
 }
 
@@ -118,7 +118,7 @@ where
         let mut heap = Self { queue: value };
 
         for i in (0..=parent!(heap.len() - 1)).rev() {
-            heap.sift_down(i);
+            heap.sift_down(i, true);
         }
 
         heap
