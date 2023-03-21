@@ -98,7 +98,14 @@ where
             pos_child = pos_right;
         }
 
+        if self.queue[pos] > self.queue[pos_child] {
+            return;
+        }
+
+        let temp = self.queue[pos];
         self.queue[pos] = self.queue[pos_child];
+        self.queue[pos_child] = temp;
+
         self.sift_down(pos_child);
     }
 }
@@ -161,6 +168,7 @@ mod tests {
     #[test]
     fn insert_remove() {
         let mut heap = Heap::new();
+
         for _ in 0..1000 {
             heap.insert(rand::thread_rng().gen_range(1..=10000));
             assert!(heap.check());
@@ -188,9 +196,9 @@ mod tests {
     }
 
     #[test]
-    fn parent() {
-        let parent = parent!(10);
-
-        assert_eq!(parent, 4);
+    fn parent_macro() {
+        for i in 0..1000 {
+            assert_eq!(parent!(i), (i - 1) / 2)
+        }
     }
 }

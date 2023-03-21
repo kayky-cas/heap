@@ -88,18 +88,25 @@ fn get(queue: Vec<i32>) -> Option<i32> {
 fn sift_down(queue: Vec<i32>, pos: usize) {
     let mut pos_child = 2 * pos + 1;
 
-    if pos_child > queue.len() - 1 {
+    if pos_child > self.queue.len() - 1 {
         return;
     }
 
     let pos_right = pos_child + 1;
 
-    if pos_right < queue.len() && queue[pos_right] > self.queue[pos_child] {
+    if pos_right < self.queue.len() && self.queue[pos_right] > self.queue[pos_child] {
         pos_child = pos_right;
     }
 
-    queue[pos] = queue[pos_child];
-    sift_down(pos_child);
+    if self.queue[pos] > self.queue[pos_child] {
+        return;
+    }
+
+    let temp = self.queue[pos];
+    self.queue[pos] = self.queue[pos_child];
+    self.queue[pos_child] = temp;
+
+    self.sift_down(pos_child);
 }
 ```
 
