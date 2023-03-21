@@ -6,16 +6,13 @@ macro_rules! parent {
     };
 }
 
-pub struct Heap<E>
-where
-    E: PartialOrd + Display,
-{
+pub struct Heap<E> {
     queue: Vec<E>,
 }
 
 impl<E> Display for Heap<E>
 where
-    E: PartialOrd + Display + Copy,
+    E: Display,
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.str_child(0, "".to_owned()))
@@ -24,12 +21,8 @@ where
 
 impl<E> Heap<E>
 where
-    E: PartialOrd + Display + Copy,
+    E: Display,
 {
-    pub fn new() -> Self {
-        Self { queue: Vec::new() }
-    }
-
     fn str_child(&self, pos: usize, mut spaces: String) -> String {
         if pos > self.queue.len() - 1 {
             return "".to_owned();
@@ -43,6 +36,15 @@ where
         content.push_str(&self.str_child(pos * 2 + 1, spaces));
 
         return content;
+    }
+}
+
+impl<E> Heap<E>
+where
+    E: PartialOrd + Copy,
+{
+    pub fn new() -> Self {
+        Self { queue: Vec::new() }
     }
 
     pub fn len(&self) -> usize {
@@ -118,7 +120,7 @@ where
 
 impl<E> From<Vec<E>> for Heap<E>
 where
-    E: PartialOrd + Display + Copy,
+    E: PartialOrd + Copy,
 {
     fn from(value: Vec<E>) -> Self {
         let mut heap = Self { queue: value };
@@ -133,14 +135,14 @@ where
 
 #[cfg(test)]
 mod tests {
-    use std::{fmt::Display, vec};
+    use std::vec;
 
     use crate::Heap;
     use rand::Rng;
 
     impl<E> Heap<E>
     where
-        E: PartialOrd + Display + Copy,
+        E: PartialOrd + Copy,
     {
         fn check(&self) -> bool {
             return self.queue.is_empty() || self.check_child(0);
