@@ -15,7 +15,7 @@ where
     E: Display,
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.str_child(0, "".to_owned()))
+        write!(f, "{}", self.str_child(0, 0))
     }
 }
 
@@ -23,17 +23,22 @@ impl<E> Heap<E>
 where
     E: Display,
 {
-    fn str_child(&self, pos: usize, mut spaces: String) -> String {
+    fn str_child(&self, pos: usize, level: usize) -> String {
         if pos > self.queue.len() - 1 {
             return "".to_owned();
         }
 
-        let mut content = format!("{}{}\n", spaces, self.queue[pos]);
+        let mut content = String::new();
 
-        spaces.push('\t');
+        content.push_str(&self.str_child(pos * 2 + 2, level + 1));
 
-        content.push_str(&self.str_child(pos * 2 + 2, spaces.clone()));
-        content.push_str(&self.str_child(pos * 2 + 1, spaces));
+        for _ in 0..level {
+            content.push('\t');
+        }
+
+        content.push_str(&format!("{}\n", self.queue[pos]));
+
+        content.push_str(&self.str_child(pos * 2 + 1, level + 1));
 
         return content;
     }
