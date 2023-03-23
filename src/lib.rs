@@ -2,7 +2,7 @@ use std::{fmt::Display, usize};
 
 macro_rules! parent {
     ($x:expr) => {
-        ($x - 1) / 2
+        (($x - 1) / 2)
     };
 }
 

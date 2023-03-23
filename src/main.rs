@@ -8,4 +8,9 @@ fn main() {
     }
 
     println!("{}", heap);
+    println!("==================================");
+
+    heap.get();
+
+    println!("{}", heap);
 }
